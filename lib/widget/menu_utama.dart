@@ -126,9 +126,9 @@ class _MenuUtamaState extends State<MenuUtama>
                           margin: const EdgeInsets.only(bottom: 20, left: 10),
                           child: TabBar(
                             tabs: [
-                              AppTabs(color: warna.menu1Color, text: "New"),
-                              AppTabs(color: warna.menu2Color, text: "Popular"),
-                              AppTabs(color: warna.menu3Color, text: "Trending")
+                              AppTabs(color: warna.menu1Color, text: "Sejarah"),
+                              AppTabs(color: warna.menu2Color, text: "Alam"),
+                              AppTabs(color: warna.menu3Color, text: "Rekreasi")
                             ],
                             indicatorPadding: const EdgeInsets.all(0),
                             indicatorSize: TabBarIndicatorSize.label,
