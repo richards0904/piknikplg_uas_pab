@@ -38,7 +38,7 @@ class CardContainer extends StatelessWidget {
                       Expanded(
                         child: Container(
                           width: 150,
-                          height: 120,
+                          height: 110,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
@@ -60,7 +60,47 @@ class CardContainer extends StatelessWidget {
                                   kategoriList[index].name,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 )),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                  kategoriList[index].location,
+                                  overflow: TextOverflow.visible,
+                                  maxLines: 1,
+                                )),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: Text(
+                                  kategoriList[index].type,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                )),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Row(
+                              children: [
+                                Text(
+                                  "Lihat Selengkapnya",
+                                  style: TextStyle(fontWeight: FontWeight.w200),
+                                ),
+                                Icon(Icons.arrow_forward)
                               ],
                             )
                           ],

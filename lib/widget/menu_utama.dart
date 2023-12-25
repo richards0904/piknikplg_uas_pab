@@ -16,11 +16,8 @@ class _MenuUtamaState extends State<MenuUtama>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _scrollController;
-  List alamList =
-      wisataList.where((tempat) => tempat.kategori == 'alam').toList();
-  List rekreasiList =
-      wisataList.where((tempat) => tempat.kategori == 'rekreasi').toList();
 
+  @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
