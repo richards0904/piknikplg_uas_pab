@@ -4,7 +4,7 @@ var wisataList = [
   WisataPlg(
       name: 'Jembatan Ampera',
       location:
-          ': Jl. KH Wahid Hasyim No.1053, 5 Ulu, Kecamatan Seberang Ulu I, Kota Palembang',
+          'Jl. KH Wahid Hasyim No.1053, 5 Ulu, Kecamatan Seberang Ulu I, Kota Palembang',
       maps: "https://maps.app.goo.gl/XqJfBzJM6M9y5qEE6",
       description:
           'Jembatan Ampera (Amanat penderitaan rakyat) adalah sebuah jembatan di Kota Palembang, Provinsi Sumatera Selatan, Indonesia. Jembatan Ampera, yang telah menjadi semacam lambang kota, terletak di tengah-tengah Kota Palembang, menghubungkan daerah Seberang Ulu dan Seberang Ilir yang dipisahkan oleh Sungai Musi. Jembatan Ampera merupakan ikon kota Palembang yang paling terkenal',
