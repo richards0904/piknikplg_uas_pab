@@ -106,9 +106,9 @@ class _MenuUtamaState extends State<MenuUtama>
                 body: TabBarView(
                   controller: _tabController,
                   children: [
-                    CardContainer(kategoris: "sejarah"),
-                    CardContainer(kategoris: "alam"),
-                    CardContainer(kategoris: "rekreasi"),
+                    CardContainer(kategoris: "Sejarah"),
+                    CardContainer(kategoris: "Alam"),
+                    CardContainer(kategoris: "Rekreasi"),
                   ],
                 ),
                 controller: _scrollController,

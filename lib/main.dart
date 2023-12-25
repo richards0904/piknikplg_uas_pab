@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:piknikplg_uas_pab/data/wisataplg_data.dart';
+import 'package:piknikplg_uas_pab/models/wisataplg.dart';
 //import 'package:piknikplg_uas_pab/widget/menu_utama.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
+import 'package:piknikplg_uas_pab/widget/detail_screen.dart';
 import 'package:piknikplg_uas_pab/widget/profile_screen.dart';
 import 'package:piknikplg_uas_pab/widget/menu_utama.dart';
 import 'package:piknikplg_uas_pab/widget/signin_screen.dart';
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
             .copyWith(primary: warna.primary, surface: warna.primary),
         useMaterial3: true,
       ),
-      home: const ProfileScreen(),
+      home: MenuUtama(),
     );
   }
 }

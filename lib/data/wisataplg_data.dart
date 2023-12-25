@@ -7,7 +7,7 @@ var wisataList = [
           'Jl. KH Wahid Hasyim No.1053, 5 Ulu, Kecamatan Seberang Ulu I, Kota Palembang',
       maps: "https://maps.app.goo.gl/XqJfBzJM6M9y5qEE6",
       description:
-          'Jembatan Ampera (Amanat penderitaan rakyat) adalah sebuah jembatan di Kota Palembang, Provinsi Sumatera Selatan, Indonesia. Jembatan Ampera, yang telah menjadi semacam lambang kota, terletak di tengah-tengah Kota Palembang, menghubungkan daerah Seberang Ulu dan Seberang Ilir yang dipisahkan oleh Sungai Musi. Jembatan Ampera merupakan ikon kota Palembang yang paling terkenal',
+          'Jembatan Ampera (Amanat Penderitaan Rakyat) adalah sebuah jembatan di Kota Palembang, Provinsi Sumatera Selatan, Indonesia. Jembatan Ampera, yang telah menjadi semacam lambang kota, terletak di tengah-tengah Kota Palembang, menghubungkan daerah Seberang Ulu dan Seberang Ilir yang dipisahkan oleh Sungai Musi. Jembatan Ampera merupakan ikon kota Palembang yang paling terkenal',
       type: 'Jembatan',
       imageAsset: 'images/ampera.png',
       imageUrls: [
@@ -17,7 +17,7 @@ var wisataList = [
         'https://media-cdn.tripadvisor.com/media/photo-s/02/e1/e4/99/ampera-at-night.jpg',
       ],
       isFavorite: false,
-      kategori: 'sejarah'),
+      kategori: 'Sejarah'),
   WisataPlg(
       name: 'Bukit Seguntang',
       location: 'Bukit Lama, Kec. Ilir Bar. I',
@@ -33,7 +33,7 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/89/ff/21/obyek-wisata-bukit-siguntang.jpg?w=1200&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'alam'),
+      kategori: 'Alam'),
   WisataPlg(
       name: 'Museum Sultan Mahmud Badarudin II',
       location: 'Jl. Sultan Mahmud Badarudin, 19 Ilir, Kec. Bukit Kecil',
@@ -49,7 +49,7 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/01/75/03/photo4jpg.jpg?w=1200&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'sejarah'),
+      kategori: 'Sejarah'),
   WisataPlg(
       name: 'Taman Kambang Iwak Besak',
       location: 'Jl. Tasik, Talang Semut, Kec. Bukit Kecil',
@@ -65,7 +65,7 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/48/ff/f8/kambang-iwak.jpg?w=1000&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'rekreasi'),
+      kategori: 'Rekreasi'),
   WisataPlg(
       name: 'Pulau Kemaro',
       location: '1 Ilir, Kec. Ilir Tim. II',
@@ -81,7 +81,7 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/0d/80/65/kemaro-island-on-nov.jpg?w=1200&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'alam'),
+      kategori: 'Alam'),
   WisataPlg(
       name: 'Tugu Ikan Belido',
       location: '19 Ilir, Kec. Bukit Kecil',
@@ -97,7 +97,7 @@ var wisataList = [
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk5lJosaf7rWTtZBcMSxNlTXSO_g2dE5-H-g&usqp=CAU',
       ],
       isFavorite: false,
-      kategori: 'sejarah'),
+      kategori: 'Sejarah'),
   WisataPlg(
       name: 'Taman Wisata Alam Punti Kayu',
       location: 'Jl. Kol. H. Burlian, Srijaya, Kec. Alang-Alang Lebar',
@@ -113,11 +113,11 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/fc/2b/56/oi000111-largejpg.jpg?w=1200&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'alam'),
+      kategori: 'Alam'),
   WisataPlg(
       name: 'Taman Celosia Spring Hill',
       location:
-          'Jl. Letjen Tni Dr. H. Ibnu Sutowo, Talang Klp., Kec. Alang-Alang Lebar',
+          'Jl. Letjen Tni Dr. H. Ibnu Sutowo, Talang Kelapa, Kec. Alang-Alang Lebar',
       maps: 'https://maps.app.goo.gl/rRPFeNT87Mr38zQv8',
       description:
           'Seperti namanya destinasi wisata ini menawarkan keindahan bunga Celosia Argenteavar yang sangak menakjubkan dengan beragam warna. Keindahan taman ini terlihat dengan keragaman warna khasnya yaitu kuning, hijau dan merah yang tertata rapi. Taman Bunga Celosia sangat cocok untuk yang suka hunting foto karena memiliki spot foto yang instagramable. Berbagai replika bangunan tersedia di Taman Bunga Celosia seperti Jembatan Ampera, Kicir Angin Belanda, Menara Eifel dan masih banyak lagi. ',
@@ -130,7 +130,7 @@ var wisataList = [
         'https://i.pinimg.com/736x/62/34/40/623440516938be0d45bdcac25d66da72.jpg',
       ],
       isFavorite: false,
-      kategori: 'rekreasi'),
+      kategori: 'Rekreasi'),
   WisataPlg(
       name: 'Masjid Agung Sultan Mahmud Badaruddin',
       location: 'Jl. Jend. Sudirman, 19 Ilir, Kec. Bukit Kecil',
@@ -146,7 +146,7 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/84/87/90/inside-the-mosque.jpg?w=1100&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'sejarah'),
+      kategori: 'Sejarah'),
   WisataPlg(
       name: 'Benteng Kuto Besak',
       location: 'Jl. Sultan Mahmud Badarudin, 19 Ilir, Kec. Bukit Kecil',
@@ -162,5 +162,5 @@ var wisataList = [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/87/ef/3f/photo0jpg.jpg?w=1200&h=-1&s=1',
       ],
       isFavorite: false,
-      kategori: 'sejarah'),
+      kategori: 'Sejarah'),
 ];
