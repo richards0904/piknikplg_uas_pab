@@ -93,6 +93,5 @@ class _MenuUtamaState extends State<MenuUtama> {
         ),
       ),
     );
-    ;
   }
 }

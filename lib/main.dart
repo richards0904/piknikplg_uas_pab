@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:piknikplg_uas_pab/widget/menu_utama.dart';
+//import 'package:piknikplg_uas_pab/widget/menu_utama.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
+import 'package:piknikplg_uas_pab/widget/signin_screen.dart';
+//import 'package:piknikplg_uas_pab/widget/signup_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
             .copyWith(primary: warna.primary, surface: warna.primary),
         useMaterial3: true,
       ),
-      home: const MenuUtama(),
+      home: const SignInScreen(),
     );
   }
 }
