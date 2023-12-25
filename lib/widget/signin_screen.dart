@@ -37,6 +37,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  Image.asset(
+                    "images/logo.png",
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   TextFormField(
                     controller: _usernameController,
                     decoration: const InputDecoration(
@@ -51,7 +57,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: "Password",
-                      errorText: _errortext.isNotEmpty ? _errortext : null,
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -71,24 +76,34 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(
                     height: 20,
                   ),
+                  Text(
+                    _errortext,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       _performSignIn();
                     },
-                    child: const Text('Sign In'),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   RichText(
                     text: TextSpan(
-                      text: 'Not Registered ?',
+                      text: 'Belum Terdaftar? Daftar ',
                       style: const TextStyle(fontSize: 16, color: Colors.black),
                       children: <TextSpan>[
                         TextSpan(
-                            text: 'Sign Up',
+                            text: 'Disini',
                             style: const TextStyle(
-                              color: Colors.black,
+                              color: Colors.blue,
                               decoration: TextDecoration.underline,
                               fontSize: 16,
                             ),
@@ -131,12 +146,14 @@ class _SignInScreenState extends State<SignInScreen> {
             });
             _logger.d('Sign In Succeeded');
           } else {
+            _errortext = "Username atau Password salah";
             _logger.e('Username Or Password Is Incorrect');
           }
         } else {
           _logger.e('No Stored Credentials Found');
         }
       } else {
+        _errortext = "Username dan password tidak boleh kosong";
         _logger.e('Username And Password Cannot Be Empty');
       }
     } catch (e) {
@@ -161,20 +178,5 @@ class _SignInScreenState extends State<SignInScreen> {
     final decryptedPassword = encrypter.decrypt64(encryptedPassword, iv: iv);
 
     return {'username': decryptedUsername, 'password': decryptedPassword};
-  }
-}
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar : AppBar(
-        title : const Text('Home'),
-      ),
-      body: const Center(
-        child: Text('Welcome !'),
-      ),
-    );
   }
 }
