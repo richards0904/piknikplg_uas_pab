@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/widget/profile_info_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -100,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             height: 200,
             width: double.infinity,
-            color: Colors.deepPurple,
+            color: warna.primary,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -116,8 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.deepPurple, width: 2),
+                            border: Border.all(color: warna.primary, width: 2),
                             shape: BoxShape.circle,
                           ),
                           child: const CircleAvatar(
@@ -143,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 20,
                 ),
                 Divider(
-                  color: Colors.deepPurple[100],
+                  color: warna.primaryShade,
                 ),
                 const SizedBox(
                   height: 4,
@@ -157,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 4,
                 ),
                 Divider(
-                  color: Colors.deepPurple[100],
+                  color: warna.primaryShade,
                 ),
                 const SizedBox(
                   height: 4,
@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 4,
                 ),
                 Divider(
-                  color: Colors.deepPurple[100],
+                  color: warna.primaryShade,
                 ),
                 const SizedBox(
                   height: 4,
@@ -190,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 4,
                 ),
                 Divider(
-                  color: Colors.deepPurple[100],
+                  color: warna.primaryShade,
                 ),
                 const SizedBox(
                   height: 20,
