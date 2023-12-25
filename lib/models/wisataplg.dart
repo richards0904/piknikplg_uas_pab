@@ -7,6 +7,7 @@ class WisataPlg {
   final String imageAsset;
   final List<String> imageUrls;
   bool isFavorite;
+  final String kategori;
 
   WisataPlg({
     required this.name,
@@ -17,5 +18,6 @@ class WisataPlg {
     required this.imageAsset,
     required this.imageUrls,
     this.isFavorite = false,
+    required this.kategori,
   });
 }

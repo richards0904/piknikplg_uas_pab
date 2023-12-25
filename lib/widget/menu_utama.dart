@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/data/wisataplg_data.dart';
 import 'package:piknikplg_uas_pab/models/wisataplg.dart';
+import 'package:piknikplg_uas_pab/widget/app_tabs.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
+import 'package:piknikplg_uas_pab/widget/containerdata.dart';
 
 class MenuUtama extends StatefulWidget {
   const MenuUtama({super.key});
@@ -10,7 +12,21 @@ class MenuUtama extends StatefulWidget {
   State<MenuUtama> createState() => _MenuUtamaState();
 }
 
-class _MenuUtamaState extends State<MenuUtama> {
+class _MenuUtamaState extends State<MenuUtama>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  List alamList =
+      wisataList.where((tempat) => tempat.kategori == 'alam').toList();
+  List rekreasiList =
+      wisataList.where((tempat) => tempat.kategori == 'rekreasi').toList();
+
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _scrollController = ScrollController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,10 +100,56 @@ class _MenuUtamaState extends State<MenuUtama> {
                               );
                             },
                           ),
-                        ))
+                        )),
                   ],
                 ),
-              )
+              ),
+              Expanded(
+                  child: NestedScrollView(
+                body: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    CardContainer(kategoris: "sejarah"),
+                    CardContainer(kategoris: "alam"),
+                    CardContainer(kategoris: "rekreasi"),
+                  ],
+                ),
+                controller: _scrollController,
+                headerSliverBuilder: (BuildContext context, bool isScrool) {
+                  return [
+                    SliverAppBar(
+                      pinned: true,
+                      backgroundColor: Colors.white,
+                      bottom: PreferredSize(
+                        preferredSize: const Size.fromHeight(50),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 20, left: 10),
+                          child: TabBar(
+                            tabs: [
+                              AppTabs(color: warna.menu1Color, text: "Sejarah"),
+                              AppTabs(color: warna.menu2Color, text: "Alam"),
+                              AppTabs(color: warna.menu3Color, text: "Rekreasi")
+                            ],
+                            indicatorPadding: const EdgeInsets.all(0),
+                            indicatorSize: TabBarIndicatorSize.label,
+                            labelPadding: const EdgeInsets.only(right: 5),
+                            controller: _tabController,
+                            isScrollable: true,
+                            indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 0))
+                                ]),
+                          ),
+                        ),
+                      ),
+                    )
+                  ];
+                },
+              ))
             ],
           ),
         ),
