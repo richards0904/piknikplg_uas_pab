@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/data/wisataplg_data.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
+import 'package:piknikplg_uas_pab/widget/detail_screen.dart';
 
 class CardContainer extends StatelessWidget {
   final String kategoris;
@@ -15,7 +16,13 @@ class CardContainer extends StatelessWidget {
         List kategoriList =
             wisataList.where((tempat) => tempat.kategori == kategoris).toList();
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetailScreen(wisataPlg: kategoriList[index])));
+          },
           child: Container(
             margin:
                 const EdgeInsets.only(left: 10, bottom: 10, right: 20, top: 10),

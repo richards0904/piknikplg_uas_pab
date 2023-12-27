@@ -79,7 +79,8 @@ class _DetailScreenState extends State<DetailScreen> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
+                        color:
+                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
                         shape: BoxShape.circle),
                     child: IconButton(
                         onPressed: () {
@@ -98,11 +99,13 @@ class _DetailScreenState extends State<DetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.wisataPlg.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          widget.wisataPlg.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       IconButton(
@@ -131,7 +134,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Expanded(child: Text('${widget.wisataPlg.location}'))
+                      Expanded(
+                          child: Text(
+                        widget.wisataPlg.location,
+                        textAlign: TextAlign.justify,
+                      ))
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -148,7 +155,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text('${widget.wisataPlg.kategori}')
+                      Text(widget.wisataPlg.kategori)
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -170,7 +177,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         ),
                       ),
-                      Text('${widget.wisataPlg.type}')
+                      Text(widget.wisataPlg.type)
                     ],
                   ),
                   const SizedBox(
@@ -191,7 +198,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     height: 16,
                   ),
                   Text(widget.wisataPlg.description,
-                  textAlign: TextAlign.justify),
+                      textAlign: TextAlign.justify),
                 ],
               ),
             ),
@@ -226,7 +233,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: CachedNetworkImage(
-                                      imageUrl: widget.wisataPlg.imageUrls[index],
+                                      imageUrl:
+                                          widget.wisataPlg.imageUrls[index],
                                       width: 120,
                                       height: 120,
                                       fit: BoxFit.cover,
