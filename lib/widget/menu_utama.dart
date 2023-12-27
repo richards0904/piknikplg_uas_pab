@@ -4,6 +4,7 @@ import 'package:piknikplg_uas_pab/models/wisataplg.dart';
 import 'package:piknikplg_uas_pab/widget/app_tabs.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
 import 'package:piknikplg_uas_pab/widget/containerdata.dart';
+import 'package:piknikplg_uas_pab/widget/profile_screen.dart';
 
 class MenuUtama extends StatefulWidget {
   const MenuUtama({super.key});
@@ -39,7 +40,11 @@ class _MenuUtamaState extends State<MenuUtama>
             actions: [
               InkWell(
                 onTap: () {
-                  debugPrint("Gambar telah ditekan");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8),
@@ -60,7 +65,7 @@ class _MenuUtamaState extends State<MenuUtama>
                   Container(
                     margin: const EdgeInsets.only(top: 10, left: 10),
                     child: const Text(
-                      "Tempat Populer",
+                      "Tempat Terpopuler",
                       style: TextStyle(fontSize: 25),
                     ),
                   ),

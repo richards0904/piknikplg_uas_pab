@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         username = decryptedUsername;
         fullname = decryptedFullname;
-        isSignedin = true;
+        isSignedin = false;
       });
     }
   }
@@ -74,12 +74,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _signInLocalStorage() async {
+    try {
+      final Future<SharedPreferences> prefsFuture =
+          SharedPreferences.getInstance();
+
+      final SharedPreferences prefs = await prefsFuture;
+      prefs.setBool('isSignedIn', true);
+      prefs.setString('fullname', fullname);
+      prefs.setString('username', username);
+
+      setState(() {
+        fullname = fullname;
+        username = username;
+        isSignedin = true;
+      });
+    } catch (e) {
+      print('An error occurred: $e');
+    }
+  }
+
   // TODO : 5. Implementasi fungsi Signin
   void signIn() {
     setState(() {
-      // isSignedin = !isSignedin;
       Navigator.pushNamed(context, '/signin');
-      isSignedin = !isSignedin;
+      _signInLocalStorage();
     });
   }
 
@@ -95,6 +114,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wisata Candi'),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Stack(
         children: [
@@ -131,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onPressed: () {},
                             icon: const Icon(
                               Icons.camera_alt,
-                              color: Colors.red,
+                              color: Colors.black,
                             ),
                           ),
                       ],
@@ -149,8 +177,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 4,
                 ),
                 ProfileInfoItem(
-                    icon: Icons.lock,
-                    label: 'Pengguna',
+                    icon: Icons.mail_rounded,
+                    label: 'Username',
                     value: username,
                     iconColor: Colors.amber),
                 const SizedBox(
@@ -184,8 +212,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     icon: Icons.favorite,
                     label: 'Favorit',
                     value: favoriteCandiCount > 0 ? '$favoriteCandiCount' : '',
-                    iconColor: Colors
-                        .red), // TODO : 4. Buat ProfileActions yang berisi TextButton sign in/out
+                    iconColor: Colors.red),
+                // TODO : 4. Buat ProfileActions yang berisi TextButton sign in/out
                 const SizedBox(
                   height: 4,
                 ),
@@ -196,10 +224,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 20,
                 ),
                 isSignedin
-                    ? TextButton(
-                        onPressed: signOut, child: const Text('Sign out'))
-                    : TextButton(
-                        onPressed: signIn, child: const Text('Sign In')),
+                    ? ElevatedButton(
+                        onPressed: signOut,
+                        child: const Text(
+                          'Sign out',
+                          style: TextStyle(color: Colors.white),
+                        ))
+                    : ElevatedButton(
+                        onPressed: signIn,
+                        child: const Text('Sign In',
+                            style: TextStyle(color: Colors.white))),
               ],
             ),
           ),

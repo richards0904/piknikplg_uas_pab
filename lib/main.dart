@@ -34,7 +34,13 @@ class MyApp extends StatelessWidget {
             .copyWith(primary: warna.primary, surface: warna.primary),
         useMaterial3: true,
       ),
-      home: MenuUtama(),
+      home: const MenuUtama(),
+      initialRoute: '/',
+      routes: {
+        '/signin': (context) => const SignInScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
     );
   }
 }

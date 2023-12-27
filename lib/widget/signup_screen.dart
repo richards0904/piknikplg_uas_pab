@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field, unused_local_variable, unused_element, prefer_typing_uninitialized_variables
-
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +18,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final Logger _logger = Logger();
 
   String _errorText = '';
-  final bool _isSignedUp = false;
   bool _obscurePassword = true;
 
-  void _signUp() {
-    String fullname = _fullnameController.text.trim();
-    String username = _usernameController.text.trim();
-    String password = _passwordController.text.trim();
+  void _signUp() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final String fullname = _fullnameController.text.trim();
+    final String username = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
 
     if (password.length < 8 ||
         !password.contains(RegExp(r'[A-Z]')) ||
@@ -49,17 +48,84 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final encryptedUsername = encrypter.encrypt(username, iv: iv);
       final encryptedPassword = encrypter.encrypt(password, iv: iv);
 
-      var prefs;
       prefs.setString('fullname', encryptedFullname.base64);
       prefs.setString('username', encryptedUsername.base64);
-      prefs.setstring('password', encryptedPassword.base64);
+      prefs.setString('password', encryptedPassword.base64);
       prefs.setString('key', key.base64);
       prefs.setString('iv', iv.base64);
     }
+    Navigator.pushReplacementNamed(context, '/signin');
+  }
+
+  void _performSignUp(BuildContext context) {
+    try {
+      final prefs = SharedPreferences.getInstance();
+      _logger.d('Sign up attempt');
+      final String fullname = _fullnameController.text;
+      final String username = _usernameController.text;
+      final String password = _passwordController.text;
+
+      if (password.length < 8 ||
+          !password.contains(RegExp(r'[A-Z]')) ||
+          !password.contains(RegExp(r'[a-z]')) ||
+          !password.contains(RegExp(r'[0-9]')) ||
+          !password.contains(RegExp(r'[@#$%^&*(),.?":{}|<>]'))) {
+        setState(() {
+          _errorText =
+              'Password minimal 8 karakter, kombinasi [A-Z],[a-z],[0-9], [@#%^&*(),.?":{}|<>]';
+        });
+        return;
+      }
+
+      if (username.isNotEmpty && fullname.isNotEmpty && password.isNotEmpty) {
+        final encrypt.Key key = encrypt.Key.fromLength(32);
+        final iv = encrypt.IV.fromLength(16);
+        final encrypter = encrypt.Encrypter(encrypt.AES(key));
+        final encryptedUsername = encrypter.encrypt(username, iv: iv);
+        final encryptedFullname = encrypter.encrypt(fullname, iv: iv);
+        final encryptedPassword = encrypter.encrypt(password, iv: iv);
+
+        _saveEncryptedDataToPrefs(
+          prefs,
+          encryptedUsername.base64,
+          encryptedFullname.base64,
+          encryptedPassword.base64,
+          key.base64,
+          iv.base64,
+        ).then((_) {
+          Navigator.pop(context);
+          _logger.d('Sign up succeeded');
+        });
+      } else {
+        _logger.e('Username or password cannot be empty');
+      }
+    } catch (e) {
+      _logger.e('An Error Occured: $e');
+    }
+  }
+
+  Future<void> _saveEncryptedDataToPrefs(
+    Future<SharedPreferences> prefs,
+    String encryptedUsername,
+    String encryptedFullname,
+    String encryptedPassword,
+    String keyString,
+    String ivString,
+  ) async {
+    final sharedPreferences = await prefs;
+    _logger.d('Saving user data to SharedPreferences');
+    await sharedPreferences.setString('username', encryptedUsername);
+    await sharedPreferences.setString('fullname', encryptedFullname);
+    await sharedPreferences.setString('password', encryptedPassword);
+    await sharedPreferences.setString('key', keyString);
+    await sharedPreferences.setString('iv', ivString);
   }
 
   @override
   void dispose() {
+    _fullnameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -126,25 +192,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: () {
                       _performSignUp(context);
                     },
-                    child: const Text('Sign Up'),
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   RichText(
                     text: TextSpan(
-                      text: 'Already have an account ?',
+                      text: 'Sudah Punya Akun ? Klik ',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.black,
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: ' Sign In.',
+                          text: 'Disini',
                           style: const TextStyle(
-                            color: Colors.black,
+                            color: Colors.blue,
                             decoration: TextDecoration.underline,
                             fontSize: 16,
                           ),
-                          recognizer: TapGestureRecognizer()..onTap = () {},
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pop(context);
+                            },
                         ),
                       ],
                     ),
@@ -156,53 +228,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-
-  void _performSignUp(BuildContext context) {
-    try {
-      final prefs = SharedPreferences.getInstance();
-      _logger.d('Sign up attempt');
-      final String fullname = _fullnameController.text;
-      final String username = _usernameController.text;
-      final String password = _passwordController.text;
-
-      if (username.isNotEmpty && password.isNotEmpty) {
-        final encrypt.Key key = encrypt.Key.fromLength(32);
-        final iv = encrypt.IV.fromLength(16);
-        final encrypter = encrypt.Encrypter(encrypt.AES(key));
-        final encryptedUsername = encrypter.encrypt(username, iv: iv);
-        final encryptedPassword = encrypter.encrypt(password, iv: iv);
-
-        _saveEncryptedDataToPrefs(
-          prefs,
-          encryptedUsername.base64,
-          encryptedPassword.base64,
-          key.base64,
-          iv.base64,
-        ).then((_) {
-          Navigator.pop(context);
-          _logger.d('Sign up succeeded');
-        });
-      } else {
-        _logger.e('Username or password cannot be empty');
-      }
-    } catch (e) {
-      _logger.e('An Error Occured: $e');
-    }
-  }
-
-  Future<void> _saveEncryptedDataToPrefs(
-    Future<SharedPreferences> prefs,
-    String encryptedUsername,
-    String encryptedPassword,
-    String keyString,
-    String ivString,
-  ) async {
-    final sharedPreferences = await prefs;
-    _logger.d('Saving user data to SharedPreferences');
-    await sharedPreferences.setString('username', encryptedUsername);
-    await sharedPreferences.setString('password', encryptedPassword);
-    await sharedPreferences.setString('key', keyString);
-    await sharedPreferences.setString('iv', ivString);
   }
 }
