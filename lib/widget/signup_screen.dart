@@ -23,7 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _performSignUp(BuildContext context) async {
     try {
       final prefs = SharedPreferences.getInstance();
-      _logger.d('Sign up attempt');
+      _logger.d('Percobaan Sign up');
       final String fullname = _fullnameController.text.trim();
       final String username = _usernameController.text.trim();
       final String password = _passwordController.text.trim();
@@ -57,13 +57,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           iv.base64,
         ).then((_) {
           Navigator.pop(context);
-          _logger.d('Sign up succeeded');
+          _logger.d('Berhasil Sign up');
         });
       } else {
-        _logger.e('Username or password cannot be empty');
+        _logger.e('Username atau password tidak boleh kosong');
       }
     } catch (e) {
-      _logger.e('An Error Occured: $e');
+      _logger.e('Terjadi Kesalahan: $e');
     }
   }
 
@@ -107,6 +107,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
+                  Image.asset(
+                    "images/logo.png",
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   TextFormField(
                     controller: _fullnameController,
                     decoration: const InputDecoration(

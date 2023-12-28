@@ -30,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
       final String username = _usernameController.text;
       final String password = _passwordController.text;
-      _logger.d('Sign In Attempt');
+      _logger.d('Percobaan Sign In');
 
       if (username.isNotEmpty && password.isNotEmpty) {
         final SharedPreferences prefs = await prefsFuture;
@@ -49,20 +49,20 @@ class _SignInScreenState extends State<SignInScreen> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacementNamed(context, '/');
             });
-            _logger.d('Sign In Succeeded');
+            _logger.d('Berhasil Sign In');
           } else {
             _errortext = "Username atau Password salah";
-            _logger.e('Username Or Password Is Incorrect');
+            _logger.e('Username atau Password Salah');
           }
         } else {
-          _logger.e('No Stored Credentials Found');
+          _logger.e('Tidak ada Kredensi Tersimpan');
         }
       } else {
         _errortext = "Username dan password tidak boleh kosong";
-        _logger.e('Username And Password Cannot Be Empty');
+        _logger.e('Username dan Password tidak boleh kosong ');
       }
     } catch (e) {
-      _logger.e('An Error Occured: $e');
+      _logger.e('Terjadi Kesalahan: $e');
     }
   }
 
