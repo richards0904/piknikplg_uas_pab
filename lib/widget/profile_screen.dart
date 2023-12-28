@@ -3,6 +3,7 @@ import 'package:piknikplg_uas_pab/widget/profile_info_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
+import 'package:logger/logger.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,6 +18,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String fullname = "";
   String username = "";
   int favoriteCandiCount = 0;
+  final Logger _logger = Logger();
+
   Future<void> _retrieveAndDecryptDataFromPrefs() async {
     final Future<SharedPreferences> prefsFuture =
         SharedPreferences.getInstance();
@@ -74,21 +77,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void _signInLocalStorage() async {
+  Future<void> _signInLocalStorage() async {
     try {
       final Future<SharedPreferences> prefsFuture =
           SharedPreferences.getInstance();
-
+      final k = await prefsFuture;
+      final logindata = await k.getBool('isSignedIn') ?? false;
       final SharedPreferences prefs = await prefsFuture;
-      prefs.setBool('isSignedIn', true);
-      prefs.setString('fullname', fullname);
-      prefs.setString('username', username);
-
-      setState(() {
-        fullname = fullname;
-        username = username;
-        isSignedin = true;
-      });
+      if (logindata) {
+        _logger.d('Masuk Benar');
+        prefs.setString('fullname', fullname);
+        prefs.setString('username', username);
+        setState(() {
+          fullname = fullname;
+          username = username;
+          isSignedin = true;
+        });
+      }
     } catch (e) {
       print('An error occurred: $e');
     }
