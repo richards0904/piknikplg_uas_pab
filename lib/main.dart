@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             .copyWith(primary: warna.primary, surface: warna.primary),
         useMaterial3: true,
       ),
-      home: const favoriteWisata(),
+      home: MenuUtama(),
       initialRoute: '/',
       routes: {
         '/signin': (context) => const SignInScreen(),

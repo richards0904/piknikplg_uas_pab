@@ -42,16 +42,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         username = decryptedUsername;
         fullname = decryptedFullname;
-        isSignedin = false;
       });
     }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _retrieveAndDecryptDataFromPrefs();
   }
 
   void _signOutLocalStorage() async {
@@ -77,23 +69,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> _signInLocalStorage() async {
+  void _signInLocalStorage() async {
     try {
       final Future<SharedPreferences> prefsFuture =
           SharedPreferences.getInstance();
-      final k = await prefsFuture;
-      final logindata = await k.getBool('isSignedIn') ?? false;
       final SharedPreferences prefs = await prefsFuture;
-      if (logindata) {
-        _logger.d('Masuk Benar');
-        prefs.setString('fullname', fullname);
-        prefs.setString('username', username);
-        setState(() {
-          fullname = fullname;
-          username = username;
-          isSignedin = true;
-        });
-      }
+      prefs.setString('fullname', fullname);
+      prefs.setString('username', username);
+      setState(() {
+        fullname = fullname;
+        username = username;
+      });
+      _checkIn();
     } catch (e) {
       print('An error occurred: $e');
     }
@@ -105,6 +92,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       Navigator.pushNamed(context, '/signin');
       _signInLocalStorage();
     });
+  }
+
+  void _checkIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool signedIn = prefs.getBool('isSignedIn') ?? false;
+
+    setState(() {
+      isSignedin = signedIn;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkIn();
+    _retrieveAndDecryptDataFromPrefs();
   }
 
   // TODO : 6. Implementasi fungsi Signout

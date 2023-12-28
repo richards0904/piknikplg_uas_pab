@@ -3,14 +3,14 @@ import 'package:piknikplg_uas_pab/data/wisataplg_data.dart';
 import 'package:piknikplg_uas_pab/models/wisataplg.dart';
 import 'package:piknikplg_uas_pab/widget/detail_screen.dart';
 
-class favoriteWisata extends StatefulWidget {
-  const favoriteWisata({super.key});
+class FavoriteWisata extends StatefulWidget {
+  const FavoriteWisata({super.key});
 
   @override
-  State<favoriteWisata> createState() => _favoriteWisataState();
+  State<FavoriteWisata> createState() => _FavoriteWisataState();
 }
 
-class _favoriteWisataState extends State<favoriteWisata> {
+class _FavoriteWisataState extends State<FavoriteWisata> {
   List<WisataPlg> _filteredWisata = [];
 
   String _searchQuery = '';
@@ -67,10 +67,10 @@ class _favoriteWisataState extends State<favoriteWisata> {
                       ? wisataList.length
                       : _filteredWisata.length,
                   itemBuilder: (context, index) {
-                    final WisataPlg = _searchQuery.isEmpty
+                    final wisataPencarian = _searchQuery.isEmpty
                         ? wisataList[index]
                         : _filteredWisata[index];
-                    if (WisataPlg.isFavorite) {
+                    if (wisataPencarian.isFavorite) {
                       return Container(
                         decoration: BoxDecoration(
                             // color: const Color.fromRGBO(35, 39, 52, 1),
@@ -89,7 +89,7 @@ class _favoriteWisataState extends State<favoriteWisata> {
                             left: 15, right: 15, bottom: 15),
                         child: ListTile(
                           title: Text(
-                            WisataPlg.name,
+                            wisataPencarian.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -97,7 +97,7 @@ class _favoriteWisataState extends State<favoriteWisata> {
                             ),
                           ),
                           subtitle: Text(
-                            WisataPlg.location,
+                            wisataPencarian.location,
                             style: const TextStyle(
                               color: Color.fromRGBO(148, 155, 167, 1),
                             ),
@@ -112,7 +112,7 @@ class _favoriteWisataState extends State<favoriteWisata> {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: AssetImage(WisataPlg.imageAsset),
+                                image: AssetImage(wisataPencarian.imageAsset),
                               ),
                             ),
                           ),
@@ -123,14 +123,14 @@ class _favoriteWisataState extends State<favoriteWisata> {
                           //       builder: (context) => DetailScreen(
                           //         wisataPlg,
                           //         onFavoriteChange: (isFavorite) {
-                          //           WisataPlg.isFavorite = isFavorite;
+                          //           wisataPencarian.isFavorite = isFavorite;
                           //         },
                           //       ),
                           //     ),
                           //   ).then((_) => {
                           //         setState(() {
                           //           _filteredWisata = wisataList
-                          //               .where((WisataPlg) => WisataPlg.isFavorite)
+                          //               .where((wisata) => wisata.isFavorite)
                           //               .toList();
                           //         })
                           //       }); // Tindakan yang akan dijalankan saat item di klik
