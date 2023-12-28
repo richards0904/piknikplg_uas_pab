@@ -20,64 +20,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _errorText = '';
   bool _obscurePassword = true;
 
-  void _signUp() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final String fullname = _fullnameController.text.trim();
-    final String username = _usernameController.text.trim();
-    final String password = _passwordController.text.trim();
-
-    if (password.length < 8 ||
-        !password.contains(RegExp(r'[A-Z]')) ||
-        !password.contains(RegExp(r'[a-z]')) ||
-        !password.contains(RegExp(r'[0-9]')) ||
-        !password.contains(RegExp(r'[@#$%^&*(),.?":{}|<>]'))) {
-      setState(() {
-        _errorText =
-            'Password minimal 8 karakter, kombinasi [A-Z],[a-z],[0-9], [@#%^&*(),.?":{}|<>]';
-      });
-      return;
-    }
-
-    if (fullname.isNotEmpty && username.isNotEmpty && password.isNotEmpty) {
-      final encrypt.Key key = encrypt.Key.fromLength(32);
-      final iv = encrypt.IV.fromLength(16);
-
-      final encrypter = encrypt.Encrypter(encrypt.AES(key));
-      final encryptedFullname = encrypter.encrypt(fullname, iv: iv);
-      final encryptedUsername = encrypter.encrypt(username, iv: iv);
-      final encryptedPassword = encrypter.encrypt(password, iv: iv);
-
-      prefs.setString('fullname', encryptedFullname.base64);
-      prefs.setString('username', encryptedUsername.base64);
-      prefs.setString('password', encryptedPassword.base64);
-      prefs.setString('key', key.base64);
-      prefs.setString('iv', iv.base64);
-    }
-    Navigator.pushReplacementNamed(context, '/signin');
-  }
-
-  void _performSignUp(BuildContext context) {
+  void _performSignUp(BuildContext context) async {
     try {
       final prefs = SharedPreferences.getInstance();
       _logger.d('Sign up attempt');
-      final String fullname = _fullnameController.text;
-      final String username = _usernameController.text;
-      final String password = _passwordController.text;
+      final String fullname = _fullnameController.text.trim();
+      final String username = _usernameController.text.trim();
+      final String password = _passwordController.text.trim();
 
       if (password.length < 8 ||
           !password.contains(RegExp(r'[A-Z]')) ||
           !password.contains(RegExp(r'[a-z]')) ||
           !password.contains(RegExp(r'[0-9]')) ||
-          !password.contains(RegExp(r'[@#$%^&*(),.?":{}|<>]'))) {
+          !password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
         setState(() {
           _errorText =
-              'Password minimal 8 karakter, kombinasi [A-Z],[a-z],[0-9], [@#%^&*(),.?":{}|<>]';
+              'Password minimal 8 karakter, kombinasi [A-Z],[a-z],[0-9], [!@#%^&*(),.?":{}|<>]';
         });
         return;
       }
 
-      if (username.isNotEmpty && fullname.isNotEmpty && password.isNotEmpty) {
+      if (username != '' && fullname != '' && password != '') {
         final encrypt.Key key = encrypt.Key.fromLength(32);
         final iv = encrypt.IV.fromLength(16);
         final encrypter = encrypt.Encrypter(encrypt.AES(key));
