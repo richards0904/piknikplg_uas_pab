@@ -7,6 +7,7 @@ import 'package:piknikplg_uas_pab/widget/detail_screen.dart';
 import 'package:piknikplg_uas_pab/widget/favorite_screen.dart';
 import 'package:piknikplg_uas_pab/widget/profile_screen.dart';
 import 'package:piknikplg_uas_pab/widget/menu_utama.dart';
+import 'package:piknikplg_uas_pab/widget/search_screen.dart';
 import 'package:piknikplg_uas_pab/widget/signin_screen.dart';
 import 'package:piknikplg_uas_pab/widget/signup_screen.dart';
 //import 'package:piknikplg_uas_pab/widget/signup_screen. dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
             .copyWith(primary: warna.primary, surface: warna.primary),
         useMaterial3: true,
       ),
-      home: MenuUtama(),
+      home: SearchScreen(),
       initialRoute: '/',
       routes: {
         '/signin': (context) => const SignInScreen(),
