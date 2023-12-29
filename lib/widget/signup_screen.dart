@@ -60,6 +60,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _logger.d('Berhasil Sign up');
         });
       } else {
+        setState(() {
+          _errorText = "Username, FullName dan password tidak boleh kosong";
+        });
         _logger.e('Username atau password tidak boleh kosong');
       }
     } catch (e) {
@@ -97,6 +100,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign Up'),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -116,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextFormField(
                     controller: _fullnameController,
                     decoration: const InputDecoration(
-                      labelText: "fullname",
+                      labelText: "Nama Lengkap",
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -126,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextFormField(
                     controller: _usernameController,
                     decoration: const InputDecoration(
-                      labelText: "username",
+                      labelText: "Username",
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -136,8 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      labelText: "password",
-                      errorText: _errorText.isNotEmpty ? _errorText : null,
+                      labelText: "Password",
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -153,6 +164,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     obscureText: _obscurePassword,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    _errorText,
+                    style: const TextStyle(color: Colors.red),
                   ),
                   const SizedBox(
                     height: 20,

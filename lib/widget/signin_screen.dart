@@ -3,7 +3,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:piknikplg_uas_pab/widget/signup_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
@@ -51,17 +50,24 @@ class _SignInScreenState extends State<SignInScreen> {
             });
             _logger.d('Berhasil Sign In');
           } else {
-            _errortext = "Username atau Password salah";
+            setState(() {
+              _errortext = "Username atau Password salah";
+            });
             _logger.e('Username atau Password Salah');
           }
         } else {
           _logger.e('Tidak ada Kredensi Tersimpan');
         }
       } else {
-        _errortext = "Username dan password tidak boleh kosong";
+        setState(() {
+          _errortext = "Username dan password tidak boleh kosong";
+        });
         _logger.e('Username dan Password tidak boleh kosong ');
       }
     } catch (e) {
+      setState(() {
+        _errortext = "Silahkan Lakukan Sign Up Terlebih Dahulu";
+      });
       _logger.e('Terjadi Kesalahan: $e');
     }
   }
@@ -72,7 +78,6 @@ class _SignInScreenState extends State<SignInScreen> {
     final encryptedPassword = sharedPreferences.getString('password') ?? '';
     final keyString = sharedPreferences.getString('key') ?? '';
     final ivString = sharedPreferences.getString('iv') ?? '';
-
     final encrypt.Key key = encrypt.Key.fromBase64(keyString);
     final iv = encrypt.IV.fromBase64(ivString);
 
@@ -81,6 +86,13 @@ class _SignInScreenState extends State<SignInScreen> {
     final decryptedPassword = encrypter.decrypt64(encryptedPassword, iv: iv);
 
     return {'username': decryptedUsername, 'password': decryptedPassword};
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -179,11 +191,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignUpScreen()));
+                                Navigator.pushNamed(context, '/signup')
+                                    .then((_) {
+                                  setState(() {
+                                    _errortext = "";
+                                  });
+                                });
                               }),
                       ],
                     ),

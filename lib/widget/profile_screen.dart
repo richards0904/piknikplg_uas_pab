@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isSignedin = false;
       });
     } catch (e) {
-      print('An error occurred: $e');
+      _logger.d('An error occurred: $e');
     }
   }
 
@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       _checkIn();
     } catch (e) {
-      print('An error occurred: $e');
+      _logger.d('An error occurred: $e');
     }
   }
 
@@ -133,120 +133,124 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            height: 200,
-            width: double.infinity,
-            color: warna.primary,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                // TODO : 2. Buat bagian ProfileHeader yang berisi gambar profil
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 200 - 50),
-                    child: Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: warna.primary, width: 2),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const CircleAvatar(
-                            radius: 50,
-                            backgroundImage:
-                                AssetImage('images/placeholder_image.png'),
-                          ),
-                        ),
-                        if (isSignedin)
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              height: 200,
+              width: double.infinity,
+              color: warna.primary,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  // TODO : 2. Buat bagian ProfileHeader yang berisi gambar profil
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 200 - 50),
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: warna.primary, width: 2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  AssetImage('images/placeholder_image.png'),
                             ),
                           ),
-                      ],
+                          if (isSignedin)
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.black,
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                // TODO : 3. Buat bagian Profileinfo yang berisi info profil
-                const SizedBox(
-                  height: 20,
-                ),
-                Divider(
-                  color: warna.primaryShade,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                ProfileInfoItem(
-                    icon: Icons.mail_rounded,
-                    label: 'Username',
-                    value: username,
-                    iconColor: Colors.amber),
-                const SizedBox(
-                  height: 4,
-                ),
-                Divider(
-                  color: warna.primaryShade,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                ProfileInfoItem(
-                    icon: Icons.person,
-                    label: 'Nama',
-                    value: fullname,
-                    showEditIcon: isSignedin,
-                    onEditPressed: () {
-                      debugPrint('Icon edit ditekan ...');
-                    },
-                    iconColor: Colors.blue),
-                const SizedBox(
-                  height: 4,
-                ),
-                Divider(
-                  color: warna.primaryShade,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                ProfileInfoItem(
-                    icon: Icons.favorite,
-                    label: 'Favorit',
-                    value: favoriteCandiCount > 0 ? '$favoriteCandiCount' : '',
-                    iconColor: Colors.red),
-                // TODO : 4. Buat ProfileActions yang berisi TextButton sign in/out
-                const SizedBox(
-                  height: 4,
-                ),
-                Divider(
-                  color: warna.primaryShade,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                isSignedin
-                    ? ElevatedButton(
-                        onPressed: signOut,
-                        child: const Text(
-                          'Sign out',
-                          style: TextStyle(color: Colors.white),
-                        ))
-                    : ElevatedButton(
-                        onPressed: signIn,
-                        child: const Text('Sign In',
-                            style: TextStyle(color: Colors.white))),
-              ],
+                  // TODO : 3. Buat bagian Profileinfo yang berisi info profil
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Divider(
+                    color: warna.primaryShade,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  ProfileInfoItem(
+                      icon: Icons.mail_rounded,
+                      label: 'Username',
+                      value: username,
+                      iconColor: Colors.amber),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Divider(
+                    color: warna.primaryShade,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  ProfileInfoItem(
+                      icon: Icons.person,
+                      label: 'Nama',
+                      value: fullname,
+                      showEditIcon: isSignedin,
+                      onEditPressed: () {
+                        debugPrint('Icon edit ditekan ...');
+                      },
+                      iconColor: Colors.blue),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Divider(
+                    color: warna.primaryShade,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  ProfileInfoItem(
+                      icon: Icons.favorite,
+                      label: 'Favorit',
+                      value:
+                          favoriteCandiCount > 0 ? '$favoriteCandiCount' : '-',
+                      iconColor: Colors.red),
+                  // TODO : 4. Buat ProfileActions yang berisi TextButton sign in/out
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Divider(
+                    color: warna.primaryShade,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  isSignedin
+                      ? ElevatedButton(
+                          onPressed: signOut,
+                          child: const Text(
+                            'Sign out',
+                            style: TextStyle(color: Colors.white),
+                          ))
+                      : ElevatedButton(
+                          onPressed: signIn,
+                          child: const Text('Sign In',
+                              style: TextStyle(color: Colors.white))),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
