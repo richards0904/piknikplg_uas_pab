@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/models/wisataplg.dart';
+import 'package:piknikplg_uas_pab/widget/favorite_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
 
@@ -53,6 +54,7 @@ class _DetailScreenState extends State<DetailScreen> {
       print(isFavorite);
     });
   }
+   
 
   @override
   Widget build(BuildContext context) {

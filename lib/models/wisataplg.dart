@@ -20,4 +20,8 @@ class WisataPlg {
     this.isFavorite = false,
     required this.kategori,
   });
+
+  void add(item) {}
+
+  void remove(item) {}
 }
