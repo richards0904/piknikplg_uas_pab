@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: warna.primary,
+                color: Colors.orange[50],
               ),
               child: TextField(
                 decoration: InputDecoration(

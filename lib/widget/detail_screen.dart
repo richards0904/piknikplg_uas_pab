@@ -54,7 +54,6 @@ class _DetailScreenState extends State<DetailScreen> {
       print(isFavorite);
     });
   }
-   
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +85,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         shape: BoxShape.circle),
                     child: IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pop(context, isFavorite);
                         },
                         icon: const Icon(Icons.arrow_back)),
                   ),
