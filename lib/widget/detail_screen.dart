@@ -14,10 +14,20 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
+
+
+
 class _DetailScreenState extends State<DetailScreen> {
   bool isFavorite = false;
   bool isSignedIn = false;
 
+// List<WisataPlg> filteredWisata = [];
+  
+
+
+// void _loadFavoriteCount()async{
+//   SharedPreferencesHelper.saveItemCount(filteredWisata.length);
+// }
   void _checkIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool signedIn = prefs.getBool('isSignedIn') ?? false;
@@ -26,7 +36,7 @@ class _DetailScreenState extends State<DetailScreen> {
       isSignedIn = signedIn;
     });
   }
-
+  
   void _loadFavouriteStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool favorite = prefs.getBool('favorite_${widget.wisataPlg.name}') ?? false;
@@ -110,8 +120,9 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {
+                          onPressed: () async{
                             _toggleFavorite();
+
                           },
                           icon: Icon(isSignedIn && isFavorite
                               ? Icons.favorite

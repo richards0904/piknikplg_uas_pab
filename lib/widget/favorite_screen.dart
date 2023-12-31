@@ -7,18 +7,42 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteWisata extends StatefulWidget {
   const FavoriteWisata({super.key});
+  
+
+  get statusCode => null;
 
   @override
-  State<FavoriteWisata> createState() => _FavoriteWisataState();
+  State<FavoriteWisata> createState() => FavoriteWisataState();
+  
+}
+class SharedPreferencesHelper {
+  static const String keyItemCount = 'itemCount';
+
+  // Simpan jumlah indeks
+  static Future<void> saveItemCount(int itemCount) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(keyItemCount, itemCount);
+  }
+
+  // Dapatkan jumlah indeks
+  static Future<int?> getItemCount() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(keyItemCount);
+  }
 }
 
-class _FavoriteWisataState extends State<FavoriteWisata> {
-  List<WisataPlg> _filteredWisata = [];
+class FavoriteWisataState extends State<FavoriteWisata> {
+  
+  List<WisataPlg> filteredWisata = [];
 
+
+  Future<void> saveIndexCount() async {
+  await SharedPreferencesHelper.saveItemCount(filteredWisata.length);
+}
+    
   void _loadFavoritePlaces() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> favoritePlaces = [];
-
     // Ambil semua kunci yang dimulai dengan 'favorite_'
     Set<String> keys = prefs.getKeys();
     for (String key in keys) {
@@ -29,9 +53,10 @@ class _FavoriteWisataState extends State<FavoriteWisata> {
               .add(key.substring(9)); // Menghapus 'favorite_' dari kunci
         }
       }
+
       setState(() {
         // Filter wisataList berdasarkan nama tempat yang ada di daftar favorit
-        _filteredWisata = wisataList
+        filteredWisata = wisataList
             .where((wisata) => favoritePlaces.contains(wisata.name))
             .toList();
       });
@@ -45,13 +70,14 @@ class _FavoriteWisataState extends State<FavoriteWisata> {
     _loadFavoritePlaces();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Favorit Wisata"),
       ),
-      body: _filteredWisata.isEmpty
+      body: filteredWisata.isEmpty
           ? const Center(
               child: Text(
                 'Daftar Favorit Kosong',
@@ -65,9 +91,9 @@ class _FavoriteWisataState extends State<FavoriteWisata> {
                 ),
                 Expanded(
                     child: ListView.builder(
-                        itemCount: _filteredWisata.length,
+                        itemCount: filteredWisata.length,
                         itemBuilder: (context, index) {
-                          final wisataPencarian = _filteredWisata[index];
+                          final wisataPencarian = filteredWisata[index];
                           return Container(
                             decoration: BoxDecoration(
                                 // color: const Color.fromRGBO(35, 39, 52, 1),
@@ -114,16 +140,18 @@ class _FavoriteWisataState extends State<FavoriteWisata> {
                                   ),
                                 ),
                               ),
-                              onTap: () {
+                              onTap: () async{
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
-                                        wisataPlg: _filteredWisata[index]),
+                                        wisataPlg: filteredWisata[index]),
+                          
                                   ),
                                 ).then((isFavorite) => {
                                       setState(() {
                                         _loadFavoritePlaces();
+                                      saveIndexCount();
                                       })
                                     }); // Tindakan yang akan dijalankan saat item di klik
                               },
