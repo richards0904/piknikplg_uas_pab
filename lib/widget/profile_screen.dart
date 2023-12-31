@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/widget/profile_info_item.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
 import 'package:logger/logger.dart';
-import 'package:piknikplg_uas_pab/widget/favorite_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -21,10 +17,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isSignedin = false;
   String fullname = "";
   String username = "";
-  final Logger _logger = Logger();
-  
   int favoriteCandiCount = 0;
-
+  final Logger _logger = Logger();
 
   Future<void> _retrieveAndDecryptDataFromPrefs() async {
     final Future<SharedPreferences> prefsFuture =
@@ -51,7 +45,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
   }
-  
 
   void _signOutLocalStorage() async {
     try {
@@ -65,11 +58,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       prefs.setString('password', "");
       prefs.setString('key', "");
       prefs.setString('iv', "");
+      prefs.setInt('jumlahFavorit', 0);
 
       setState(() {
         fullname = "";
         username = "";
         isSignedin = false;
+        favoriteCandiCount = 0;
       });
     } catch (e) {
       _logger.d('An error occurred: $e');
@@ -110,12 +105,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  void _loadFavoriteCount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int jumlahFavorit = prefs.getInt('jumlahFavorit') ?? 0;
+    setState(() {
+      favoriteCandiCount = jumlahFavorit;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _checkIn();
     _retrieveAndDecryptDataFromPrefs();
+    _loadFavoriteCount();
   }
 
   // TODO : 6. Implementasi fungsi Signout
@@ -127,7 +131,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wisata Candi'),
@@ -227,19 +230,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     height: 4,
                   ),
-                 FutureBuilder(future: SharedPreferencesHelper.getItemCount(), builder: (context,snapshot){
-                  if (snapshot.hasData) {
-                    return ProfileInfoItem(icon: Icons.favorite, label: 'Favorite', value: '${snapshot.data}', iconColor: Colors.red);
-                    
-                  } else {
-                    return const ProfileInfoItem(icon: Icons.favorite, label: 'Favorite', value: '-', iconColor: Colors.red);
-                    
-                  }
-
-                 }),
-                      
-                      
-                      
+                  ProfileInfoItem(
+                      icon: Icons.favorite,
+                      label: 'Favorit',
+                      value:
+                          favoriteCandiCount > 0 ? '$favoriteCandiCount' : '-',
+                      iconColor: Colors.red),
                   // TODO : 4. Buat ProfileActions yang berisi TextButton sign in/out
                   const SizedBox(
                     height: 4,
@@ -270,4 +266,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-

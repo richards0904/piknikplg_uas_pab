@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/models/wisataplg.dart';
-import 'package:piknikplg_uas_pab/widget/favorite_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends StatefulWidget {
   final WisataPlg wisataPlg;
@@ -14,29 +14,21 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
-
-
-
 class _DetailScreenState extends State<DetailScreen> {
   bool isFavorite = false;
   bool isSignedIn = false;
 
-// List<WisataPlg> filteredWisata = [];
-  
-
-
-// void _loadFavoriteCount()async{
-//   SharedPreferencesHelper.saveItemCount(filteredWisata.length);
-// }
   void _checkIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool signedIn = prefs.getBool('isSignedIn') ?? false;
-
+    if (!signedIn) {
+      isFavorite = false;
+    }
     setState(() {
       isSignedIn = signedIn;
     });
   }
-  
+
   void _loadFavouriteStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool favorite = prefs.getBool('favorite_${widget.wisataPlg.name}') ?? false;
@@ -58,11 +50,25 @@ class _DetailScreenState extends State<DetailScreen> {
 
     bool favoriteStatus = !isFavorite;
     prefs.setBool('favorite_${widget.wisataPlg.name}', favoriteStatus);
+    int jumlahFavorit = prefs.getInt('jumlahFavorit') ?? 0;
+    if (favoriteStatus) {
+      prefs.setInt('jumlahFavorit', jumlahFavorit + 1);
+    } else {
+      prefs.setInt('jumlahFavorit', jumlahFavorit - 1);
+    }
 
     setState(() {
       isFavorite = favoriteStatus;
       print(isFavorite);
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkIn();
+    _loadFavouriteStatus();
   }
 
   @override
@@ -90,14 +96,32 @@ class _DetailScreenState extends State<DetailScreen> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                   child: Container(
                     decoration: BoxDecoration(
-                        color:
-                            Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
+                        color: const Color.fromARGB(255, 255, 255, 255)
+                            .withOpacity(0.7),
                         shape: BoxShape.circle),
                     child: IconButton(
                         onPressed: () {
                           Navigator.pop(context, isFavorite);
                         },
                         icon: const Icon(Icons.arrow_back)),
+                  ),
+                ),
+                Positioned(
+                  top: 210,
+                  left: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 32),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 255, 255)
+                              .withOpacity(0.7),
+                          shape: BoxShape.circle),
+                      child: IconButton(
+                          onPressed: () =>
+                              launchUrl(Uri.parse(widget.wisataPlg.maps)),
+                          icon: const Icon(Icons.location_pin)),
+                    ),
                   ),
                 ),
               ],
@@ -120,9 +144,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () async{
+                          onPressed: () {
                             _toggleFavorite();
-
                           },
                           icon: Icon(isSignedIn && isFavorite
                               ? Icons.favorite
@@ -215,7 +238,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -237,11 +260,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           itemCount: widget.wisataPlg.imageUrls.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.only(right: 8),
+                              padding: const EdgeInsets.only(right: 8),
                               child: GestureDetector(
                                 onTap: () {},
                                 child: Container(
-                                  decoration: BoxDecoration(),
+                                  decoration: const BoxDecoration(),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: CachedNetworkImage(
@@ -256,7 +279,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                         color: Colors.deepPurple[50],
                                       ),
                                       errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                          const Icon(Icons.error),
                                     ),
                                   ),
                                 ),
@@ -274,13 +297,5 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _checkIn();
-    _loadFavouriteStatus();
   }
 }
