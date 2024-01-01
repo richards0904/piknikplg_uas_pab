@@ -4,6 +4,7 @@ import 'package:piknikplg_uas_pab/models/wisataplg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:logger/logger.dart';
 
 class DetailScreen extends StatefulWidget {
   final WisataPlg wisataPlg;
@@ -17,6 +18,7 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   bool isFavorite = false;
   bool isSignedIn = false;
+  final Logger _logger = Logger();
 
   void _checkIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,13 +61,12 @@ class _DetailScreenState extends State<DetailScreen> {
 
     setState(() {
       isFavorite = favoriteStatus;
-      print(isFavorite);
+      _logger.d(isFavorite);
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _checkIn();
     _loadFavouriteStatus();
@@ -262,7 +263,35 @@ class _DetailScreenState extends State<DetailScreen> {
                             return Padding(
                               padding: const EdgeInsets.only(right: 8),
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      opaque: false,
+                                      pageBuilder:
+                                          (BuildContext context, _, __) {
+                                        return Scaffold(
+                                          backgroundColor: Colors.black,
+                                          body: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Center(
+                                              child: Hero(
+                                                  tag:
+                                                      'imageHero', // Tag Hero harus sama dengan gambar di layar sebelumnya
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: widget.wisataPlg
+                                                        .imageUrls[index],
+                                                    fit: BoxFit.contain,
+                                                  )),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                                 child: Container(
                                   decoration: const BoxDecoration(),
                                   child: ClipRRect(

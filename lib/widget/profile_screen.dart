@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:piknikplg_uas_pab/widget/profile_info_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:piknikplg_uas_pab/widget/app_color.dart' as warna;
 import 'package:logger/logger.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,11 +17,140 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   // TODO : 1. Deklarasikan variabel yang dibutuhkan
+  String _imageFile = '';
+  final picker = ImagePicker();
   bool isSignedin = false;
   String fullname = "";
   String username = "";
   int favoriteCandiCount = 0;
   final Logger _logger = Logger();
+
+  Future<void> _getImage(ImageSource source) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      prefs.setString("profile_image_path", pickedFile.path);
+      setState(() {
+        _imageFile = prefs.getString("profile_image_path") ?? '';
+      });
+    }
+  }
+
+  void _showPicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const ListTile(
+              title: Text(
+                "Image Source",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.photo_library,
+              ),
+              title: const Text("Gallery"),
+              onTap: () {
+                Navigator.of(context).pop();
+                _getImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.photo_library,
+              ),
+              title: const Text("Camera"),
+              onTap: () {
+                Navigator.of(context).pop();
+                _getImage(ImageSource.camera);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _loadProfilePhoto() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _imageFile = prefs.getString("profile_image_path") ?? '';
+    });
+  }
+
+  void _editFullName() {
+    String newName = '';
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Nama'),
+          content: TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Masukkan nama baru',
+            ),
+            onChanged: (value) {
+              newName = value;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Simpan'),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                final keyString = prefs.getString('key') ?? '';
+                final ivString = prefs.getString('iv') ?? '';
+
+                final encrypt.Key key = encrypt.Key.fromBase64(keyString);
+                final iv = encrypt.IV.fromBase64(ivString);
+                final encrypter = encrypt.Encrypter(encrypt.AES(key));
+                if (newName.isNotEmpty) {
+                  final encryptedFullname = encrypter.encrypt(newName, iv: iv);
+                  prefs.setString('fullname', encryptedFullname.base64);
+                  setState(() {
+                    fullname = newName;
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  _showAlertDialog();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAlertDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Peringatan'),
+          content: const Text("Nama Tidak Boleh Kosong"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Tutup'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> _retrieveAndDecryptDataFromPrefs() async {
     final Future<SharedPreferences> prefsFuture =
@@ -59,6 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       prefs.setString('key', "");
       prefs.setString('iv', "");
       prefs.setInt('jumlahFavorit', 0);
+      prefs.setString("profile_image_path", '');
 
       setState(() {
         fullname = "";
@@ -120,6 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _checkIn();
     _retrieveAndDecryptDataFromPrefs();
     _loadFavoriteCount();
+    _loadProfilePhoto();
   }
 
   // TODO : 6. Implementasi fungsi Signout
@@ -170,15 +304,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Border.all(color: warna.primary, width: 2),
                               shape: BoxShape.circle,
                             ),
-                            child: const CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('images/placeholder_image.png'),
-                            ),
+                            child: CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    _imageFile.isNotEmpty && isSignedin
+                                        ? FileImage(File(_imageFile))
+                                            as ImageProvider
+                                        : const AssetImage(
+                                            'images/placeholder_image.png')),
                           ),
                           if (isSignedin)
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _showPicker();
+                              },
                               icon: const Icon(
                                 Icons.camera_alt,
                                 color: Colors.black,
@@ -218,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       value: fullname,
                       showEditIcon: isSignedin,
                       onEditPressed: () {
-                        debugPrint('Icon edit ditekan ...');
+                        _editFullName();
                       },
                       iconColor: Colors.blue),
                   const SizedBox(
