@@ -93,7 +93,6 @@ var wisataList = [
       imageUrls: [
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/cc/2f/6f/tugu-ikan-belido.jpg?w=1200&h=-1&s=1',
         'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/cc/28/66/tugu-ikan-belido.jpg?w=800&h=-1&s=1',
-        'https://cdn0-production-images-kly.akamaized.net/GMS0mKEucxybfKvOO4oF-VRCdOE=/1200x900/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/1687462/original/007524900_1503395787-IMG_20170821_132214.jpg',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk5lJosaf7rWTtZBcMSxNlTXSO_g2dE5-H-g&usqp=CAU',
       ],
       isFavorite: false,
@@ -124,10 +123,8 @@ var wisataList = [
       type: 'Taman Wisata',
       imageAsset: 'images/taman_bunga.jpg',
       imageUrls: [
-        'https://asset-2.tstatic.net/tribunsumselwiki/foto/bank/images/taman-bunga-celosia.jpg',
         'https://1.bp.blogspot.com/-9h1qZga2Ef4/YRrnWnQMBpI/AAAAAAAAGxk/5I_4X_ovfpsdahvb1BDvngxxBQ9dzG0JACLcBGAsYHQ/s576/taman-bunga-celosia-springhill.jpg',
         'https://1.bp.blogspot.com/-GfrpIq179wg/YKBtH_RbZII/AAAAAAAACL8/CEbMYstp384jRnBEP7-MGZ2YZTG-dVv3gCLcBGAsYHQ/s1080/taman-bunga-celosia-springhill-palembang%2B%25281%2529.jpg',
-        'https://i.pinimg.com/736x/62/34/40/623440516938be0d45bdcac25d66da72.jpg',
       ],
       isFavorite: false,
       kategori: 'Rekreasi'),

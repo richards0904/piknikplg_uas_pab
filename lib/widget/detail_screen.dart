@@ -278,8 +278,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                             },
                                             child: Center(
                                               child: Hero(
-                                                  tag:
-                                                      'imageHero', // Tag Hero harus sama dengan gambar di layar sebelumnya
+                                                  tag: 'imageHero',
                                                   child: CachedNetworkImage(
                                                     imageUrl: widget.wisataPlg
                                                         .imageUrls[index],
